@@ -189,3 +189,7 @@ ChatGPT was used only for:
 - Debugging and improvement suggestions
 
 **All source code was written and implemented by me.**
+
+my notes//
+
+- Passkey is "17794"
