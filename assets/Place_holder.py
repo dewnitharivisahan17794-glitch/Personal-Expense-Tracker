@@ -1,0 +1,33 @@
+import tkinter as tk
+from tkinter import ttk
+
+def PLH(parent, text, var, X, Y):
+    style=ttk.Style()
+    style.configure("Placeholder.TEntry", forground="White", fieldbackground="#1e3a45")
+    style.configure("Nomal.TEntry", forground="Yellow", fieldbackground="#1e3a45")
+
+    style.map(
+        "Placeholder.TEntry",
+        foreground=[("!disabled", "White")])
+
+    style.map(
+        "Normal.TEntry",
+        foreground=[("!disabled", "Yellow")])
+    
+    
+    entry=ttk.Entry(parent, textvariable=var, style="Placeholder.TEntry", width=40)
+    entry.place(x=X, y=Y, anchor='n')
+    entry.insert(0,text)
+
+    def forcus_in(event):
+        if entry.get()==text:
+            entry.delete(0,tk.END)
+            entry.configure(style="Nomal.TEntry")
+
+    def forcus_out(event):
+        if entry.get()=="":
+            entry.insert(0,text)
+            entry.configure(style="Placeholder.TEntry")
+            
+    entry.bind("<FocusIn>", forcus_in)
+    entry.bind("<FocusOut>", forcus_out)

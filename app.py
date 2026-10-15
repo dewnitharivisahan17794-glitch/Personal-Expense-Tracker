@@ -1,13 +1,18 @@
 import tkinter as tk
 from tkinter import ttk
 from PIL import Image, ImageTk
+from tkinter import messagebox
+from assets.Place_holder import PLH
 
 root = tk.Tk()
 root.title("Expense Tracker")
 root.geometry(f'600x500')
 root.resizable(False,False)
 root.iconbitmap("assets/image/icon.ico")
+#var
 Passkey = tk.StringVar()
+Date = tk.StringVar()
+Amount = tk.StringVar()
 # User Login.
 style1 = ttk.Style()
 style1.theme_use("clam")
@@ -55,9 +60,36 @@ style2.configure(
     'Custom.TButton', 
     background= "#050505",
     foreground='white', 
-    font=('Helvetica', 12, 'bold')
-)
-add = ttk.Button(canvas2, text="✅ Add new expenses", style="Custom.TButton" )
+    font=('Helvetica', 12, 'bold'))
+
+#add new expenses
+
+def add():
+    frame2.pack_forget()
+    canvas3,frame3 = Newpage("Add new expenses")
+    date = PLH(canvas3, "Date", Date, 300, 100)
+    description = tk.Text(canvas3, width=40, height=5, foreground="White", background="#1e3a45",  borderwidth=2,
+                                                                                            relief="solid",
+                                                                                            highlightthickness=1,
+                                                                                            highlightbackground="white",
+                                                                                            highlightcolor="white")
+    description.insert("1.0","How did you spend your money,\ndiscribeit on me!")
+    description.place(x=300,y=150, anchor="n")
+    frame3.pack(fill="both", expand=True)
+
+    canvas3.create_text(300, 260, text="Choose your category here:",anchor='n', fill="white")
+
+    Categories = ttk.Combobox(canvas3, values=("Food","Transport", "Education", "Shopping", "Bills", "Others"))
+    Categories.place(x=300, y = 290, anchor='n')
+
+    amount = PLH(canvas3, "Amount", Amount, 300, 330)
+
+    #saving data in json
+
+    
+    
+    
+add = ttk.Button(canvas2, text="✅ Add new expenses", style="Custom.TButton", command=add )
 add.place(x = 300, y = 100, anchor='n')
 view = ttk.Button(canvas2, text="✅ View all expenses", style="Custom.TButton" )
 view.place(x = 300, y = 175, anchor='n')
@@ -73,20 +105,31 @@ style3.configure(
     font=('arial', 8, 'bold')
 )
 
-log_out = ttk.Button(canvas2, text="Logout", style="logout.TButton")
-log_out.place(x=0, y=0)
+
 def CheckPasskey(Password):
     
     if(Password.get() == "17794"):
         print("OK")
         Passkey.set("")
-        frame1.forget()
+        frame1.pack_forget()
         frame2.pack(fill='both', expand=True)
         
     else:
         print("NO")
         Passkey.set("")
 
+def logout():
+    
+    result=messagebox.askokcancel("Are you sure?", "Sure?", parent=frame2)
+    if result:
+        frame2.pack_forget()
+        frame1.pack()
+    else:
+        pass
+    
+
+log_out = ttk.Button(canvas2, text="Logout", style="logout.TButton", command=logout)
+log_out.place(x=0, y=0)
 enter = ttk.Button(canvas, text="ENTER", command=lambda: CheckPasskey(Passkey))
 enter.place(x=258,y= 250)
 
