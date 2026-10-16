@@ -3,6 +3,8 @@ from tkinter import ttk
 from PIL import Image, ImageTk
 from tkinter import messagebox
 from assets.Place_holder import PLH
+import json
+from pathlib import Path
 
 root = tk.Tk()
 root.title("Expense Tracker")
@@ -85,6 +87,17 @@ def add():
     amount = PLH(canvas3, "Amount", Amount, 300, 330)
 
     #saving data in json
+
+    category = Categories.get()
+    Description = description.get()
+
+    new_expense = {"Date" : Date, "Description" : Description, "Category" : category, "Amount" : Amount}
+
+    
+
+
+    save = ttk.Button(canvas3, text="Save", style="Custom.TButton")
+    save.place(x=300, y= 400, anchor='n')
 
     
     
