@@ -3,16 +3,16 @@ from tkinter import ttk
 
 def PLH(parent, text, var, X, Y):
     style=ttk.Style()
-    style.configure("Placeholder.TEntry", forground="White", fieldbackground="#1e3a45")
-    style.configure("Nomal.TEntry", forground="Yellow", fieldbackground="#1e3a45")
+    style.configure("Placeholder.TEntry", forground="Yellow", fieldbackground="#1e3a45")
+    style.configure("Normal.TEntry", forground="White", fieldbackground="#1e3a45")
 
     style.map(
         "Placeholder.TEntry",
-        foreground=[("!disabled", "White")])
+        foreground=[("!disabled", "Yellow")])
 
     style.map(
         "Normal.TEntry",
-        foreground=[("!disabled", "Yellow")])
+        foreground=[("!disabled", "White")])
     
     
     entry=ttk.Entry(parent, textvariable=var, style="Placeholder.TEntry", width=40)
@@ -22,7 +22,7 @@ def PLH(parent, text, var, X, Y):
     def forcus_in(event):
         if entry.get()==text:
             entry.delete(0,tk.END)
-            entry.configure(style="Nomal.TEntry")
+            entry.configure(style="Normal.TEntry")
 
     def forcus_out(event):
         if entry.get()=="":

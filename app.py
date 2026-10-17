@@ -3,7 +3,7 @@ from tkinter import ttk
 from PIL import Image, ImageTk
 from tkinter import messagebox
 from assets.Place_holder import PLH
-import json
+import json, os
 from pathlib import Path
 
 root = tk.Tk()
@@ -64,9 +64,43 @@ style2.configure(
     foreground='white', 
     font=('Helvetica', 12, 'bold'))
 
-#add new expenses
+#saving data in json
+FILE = "assets/data/data.json"
 
+def load_expenses():
+    if os.path.exists(FILE):
+        try:
+            with open(FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except json.JSONDecodeError:
+            return []
+    return []
+
+def save_expense():
+    new_expense = {
+        "Date": Date.get(),
+        "Description": description.get("1.0", "end-1c").strip(),
+        "Category": Categories.get(),
+        "Amount": Amount.get()
+    }
+
+    expenses = load_expenses()      # palaweni data load karanawa
+    expenses.append(new_expense)    # aluth ekak add karanawa
+
+    os.makedirs(os.path.dirname(FILE), exist_ok=True)   # folder eka nathnam hadanawa
+    with open(FILE, "w", encoding="utf-8") as f:
+        json.dump(expenses, f, indent=4, ensure_ascii=False)
+
+    Date.set("")
+    description.delete("1.0", "end")
+    description.insert("1.0", "How did you spend your money,\ndiscribeit on me!")
+    Categories.set("")
+    Amount.set("")
+
+#add new expenses
 def add():
+    global description
+    global Categories
     frame2.pack_forget()
     canvas3,frame3 = Newpage("Add new expenses")
     date = PLH(canvas3, "Date", Date, 300, 100)
@@ -83,21 +117,16 @@ def add():
 
     Categories = ttk.Combobox(canvas3, values=("Food","Transport", "Education", "Shopping", "Bills", "Others"))
     Categories.place(x=300, y = 290, anchor='n')
-
     amount = PLH(canvas3, "Amount", Amount, 300, 330)
-
-    #saving data in json
-
-    category = Categories.get()
-    Description = description.get()
-
-    new_expense = {"Date" : Date, "Description" : Description, "Category" : category, "Amount" : Amount}
+    save = ttk.Button(canvas3, text="Save", style="Custom.TButton", command=save_expense)
+    save.place(x=300, y= 360, anchor='n')
+    
 
     
 
 
-    save = ttk.Button(canvas3, text="Save", style="Custom.TButton")
-    save.place(x=300, y= 400, anchor='n')
+
+
 
     
     
